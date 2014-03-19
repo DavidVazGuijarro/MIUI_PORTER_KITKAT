@@ -1,0 +1,3 @@
+post-build=google/hammerhead/hammerhead:4.4.2/KOT49H/937116:user/release-keys
+post-timestamp=1393811227
+pre-device=hammerhead

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.lbe.security.miui">
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.SET_PROCESS_LIMIT"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <permission android:name="com.lbe.hips.rpc" android:protectionLevel="signature"/>
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="com.lbe.security.LBEApplication" android:persistent="true" android:theme="@android:style/Theme.Holo.Light">
+        <service android:enabled="true" android:exported="true" android:name="com.lbe.security.service.SecurityService" android:process=":service"/>
+        <activity android:label="@string/app_name" android:name="com.lbe.security.ui.MainActivity" android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:icon="@drawable/ic_autostart" android:label="@string/Dashboard_Perm_AutoStart" android:name="com.lbe.security.ui.AutoStartAppList">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.lbe.security.ui.PermissionEntry"/>
+        <activity android:name="com.lbe.security.ui.MonitoredAppList"/>
+        <activity android:name="com.lbe.security.ui.LogList"/>
+        <activity android:name="com.lbe.security.ui.PermissionList"/>
+        <activity android:name="com.lbe.security.ui.PermissionListUnavailable"/>
+        <activity android:name="com.lbe.security.ui.PermissionListRoot"/>
+        <activity android:name="com.lbe.security.ui.PermissionListHIPS"/>
+        <activity android:name="com.lbe.security.ui.AppPermissionEditor" android:uiOptions="splitActionBarWhenNarrow"/>
+        <activity android:name="com.lbe.security.ui.PackageInstallerPermissionEditor">
+            <intent-filter>
+                <action android:name="com.lbe.security.intent.PACKAGE_INSTALLED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:scheme="package"/>
+            </intent-filter>
+        </activity>
+        <activity android:exported="true" android:name="com.lbe.security.ui.su.SuEnableDialog" android:theme="@android:style/Theme.Holo.Light.Panel"/>
+        <receiver android:enabled="true" android:name="com.lbe.security.service.optimizer.BootReceiver" android:process=":service">
+            <intent-filter android:priority="2147483647">
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:enabled="true" android:exported="true" android:name="com.lbe.security.service.privacy.HIPSReceiver" android:permission="com.lbe.hips.rpc" android:process=":service">
+            <intent-filter>
+                <action android:name="com.lbe.security.intent.hips_service"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:enabled="true" android:exported="true" android:name="com.lbe.security.service.privacy.FWReceiver" android:process=":service">
+            <intent-filter>
+                <action android:name="com.lbe.security.firewall2.getuidconfig"/>
+                <action android:name="com.lbe.security.firewall2.setuidconfig"/>
+            </intent-filter>
+        </receiver>
+        <provider android:authorities="com.lbe.security.miui.privacy.content" android:name="com.lbe.security.service.privacy.DummyContentProvider" android:process=":service"/>
+        <provider android:authorities="com.lbe.security.miui.su" android:exported="true" android:name="com.lbe.security.service.su.SuContentProvider" android:process=":service"/>
+    </application>
+</manifest>
